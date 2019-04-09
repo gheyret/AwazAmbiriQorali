@@ -1,8 +1,8 @@
 Simple speech alignment tool
 
-Awaz we tekistni maslashturush qorali.
+Awaz we tékistni maslashturush qorali.
 
-Mezkur qoralda awazni qoyushqa towendiki ambar ishlitildi.
+Mezkur qoralda awazni qoyushqa töwendiki ambar ishlitildi.
 
 libzplay - windows ( WIN32 ) multimedia library
    ver: 2.00
@@ -15,8 +15,18 @@ libzplay - windows ( WIN32 ) multimedia library
    Email: zcindori@inet.hr
 
 
-Reqemlerni sanlargha aylandurush uchun:
+Reqemlerni sanlargha aylandurush üchün:
 
 https://github.com/iwethen/Uyghur-Number-Reader
 
 ishlitildi.
+
+
+Awaz we tékistler töwendiki qa’ide boyiche saqlap, bu qoralni ishlitish arqiliq awaz we tékistni maslashturushni élip bérishqa bolidu.
+Maslashturush pütünley küchke tayinip élip bérilidu. aptomatik emes. Awaz höjjiti qosh chekse yaki "v" kunupkisi bassa, tallanghan awaz höjjiti qoyulidu.
+bir belge sol tereptiki tékistke toghrilinidu. eger awaz bilen tékist mas bolmisa, nur belgisi turghan qurni tehrirlep, awazgha maslashturush élip bérilsa bolidu.
+Programma axirlashqanda tékist höjjiti aptomatik saqlinidu.
+
+Awaz saqlanghan qisquch nami bilen uning tékist höjjitining nami oxshash bolushi kérek(elwette kéngeytme nami .txt bolidu). 
+towendikidek:
+[[https://github.com/gheyret/AwazAmbiriQorali/edit/master/|alt=octocat]]
