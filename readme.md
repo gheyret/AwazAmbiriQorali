@@ -11,7 +11,7 @@ Mezkur qoralda awazni qoyushqa töwendiki ambar ishlitildi.
    Author: Zoran Cindori
    Web: http://libzplay.sourceforge.net/
    Email: zcindori@inet.hr
-
+   
 
 Reqemlerni sanlargha aylandurush üchün:
 
