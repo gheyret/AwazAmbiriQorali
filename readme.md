@@ -4,18 +4,18 @@ Awaz we tékistni maslashturush qorali.
 
 Mezkur qoralda awazni qoyushqa töwendiki ambar ishlitildi.
 
->   libzplay - windows ( WIN32 ) multimedia library
->   ver: 2.00
->   date: 22. April, 2010.
->   Copyright (C) 2003-2010 Zoran Cindori
->   Author: Zoran Cindori
->   Web: http://libzplay.sourceforge.net/
->   Email: zcindori@inet.hr
+##   libzplay - windows ( WIN32 ) multimedia library
+##   ver: 2.00
+##   date: 22. April, 2010.
+##   Copyright (C) 2003-2010 Zoran Cindori
+##   Author: Zoran Cindori
+##   Web: http://libzplay.sourceforge.net/
+##   Email: zcindori@inet.hr
 
 
 Reqemlerni sanlargha aylandurush üchün:
 
-https://github.com/iwethen/Uyghur-Number-Reader
+##  https://github.com/iwethen/Uyghur-Number-Reader
 
 ishlitildi.
 
