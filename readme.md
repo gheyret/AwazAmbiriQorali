@@ -34,3 +34,8 @@ towendikidek:
 <p>
   <img src="./qurulma.png"/>
 </p>
+
+## Ékran körünüshi:
+<p>
+  <img src="./screenshot.png"/>
+</p>
