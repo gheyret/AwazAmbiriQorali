@@ -14,15 +14,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using libZPlay;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace AwazAmbiriQorali
 {
 	/// <summary>
 	/// Description of MainForm.
 	/// </summary>
+	/// 
+	
 	public partial class MainForm : Form
 	{
-		string gAwazyol = @"";
+		string gAwazyol = @"esliwavs\";
 		string gAldinqiSure="";
 		bool   gAldinqiOzgerdi = false;
 		
@@ -36,8 +39,15 @@ namespace AwazAmbiriQorali
 			//
 			InitializeComponent();
 			
+			//gAwazyol = @"F:\audios\\injil\esliwavs";
+			
+			chkWaves.KenjiTextBox = this.textBox1;
+			textBox1.ListBox = chkWaves;
+			
 			this.SetStyle(ControlStyles.DoubleBuffer,true);
 			button2.Text="Hemmini Qoy";
+			
+			
 			//System.Diagnostics.Debug.Write(CleanText("Gheyret Tohti 47 yashqa kirdi, ma’arip[]2344 )"));
 			//String oqu=SanlarniOqu("Gheyret Tohti 47 yashqa kirdi");
 			//
@@ -92,7 +102,7 @@ namespace AwazAmbiriQorali
 				if(File.Exists(filenm)==false){
 					File.WriteAllText(filenm,"");
 				}
-				tekist = (File.ReadAllText(filenm,Encoding.UTF8)).Trim().ToLower();
+				tekist = (File.ReadAllText(filenm,Encoding.UTF8)).Trim().ToLower().Replace("'","’").Replace("ë","é");
 				tekist = SanlarniOqu(tekist);
 				tekist =tekist.Replace("　"," ");
 //				tekist =tekist.Replace("német","ni’amet").Replace("niamiti","ni’amiti").Replace("meghpiret","meghfiret").Replace("qowm","qewim").Replace("kitab","kitap").Replace("yehudiy","yehudi");
@@ -129,6 +139,21 @@ namespace AwazAmbiriQorali
 			textBox1.Focus();
 		}
 		
+		
+		//void ChkWavestMouseWheel(object sender, MouseEventArgs e)
+		//{
+			//System.Diagnostics.Debug.WriteLine(chkWaves.TopIndex);
+			//System.Diagnostics.Debug.WriteLine(chkWaves.);
+		//	Text1MouseWheel(this.textBox1, e);
+		//}
+		
+		//void Text1MouseWheel(object sender, MouseEventArgs e)
+		//{
+		//	int pos = textBox1.GetCharIndexFromPosition(e.Location);
+		//	int line = textBox1.GetLineFromCharIndex(pos);
+		//	System.Diagnostics.Debug.WriteLine(line);
+		//}
+		
 		void ChkWavesSelectedIndexChanged(object sender, EventArgs e)
 		{
 			if(chkWaves.SelectedIndex==-1) return;
@@ -148,9 +173,7 @@ namespace AwazAmbiriQorali
 			textBox1.Focus();
 			int qurUzun =0;
 			if(qur<textBox1.Lines.Length){
-				for(int i=0;i<qur;i++){
-					qurUzun += textBox1.Lines[i].Length+2;
-				}
+				qurUzun = textBox1.GetFirstCharIndexFromLine(qur);
 			}
 			textBox1.SelectionLength = 0;
 			textBox1.SelectionStart = qurUzun;
@@ -182,7 +205,9 @@ namespace AwazAmbiriQorali
 				String metaQur;
 				StringBuilder metaBuf=new StringBuilder();
 				StringBuilder txtBuf = new StringBuilder();
-				List<string> asrBuf=new List<string>();
+
+				List<string> trainBuf=new List<string>();
+				List<string> testBuf=new List<string>();
 				
 				
 				String strClean;
@@ -192,10 +217,8 @@ namespace AwazAmbiriQorali
 					wavFiles=Directory.GetFiles(filenm,"*.wav");
 					label2.Text="Qisquch: " + qisquch;
 					Application.DoEvents();
-					if(Directory.Exists(@"..\tekshurulgen\")){
-						if(File.Exists(@"..\tekshurulgen\"+qisquch+".txt")==false){
-							continue;
-						}
+					if(File.Exists(Path.Combine(gAwazyol,@"..\tekshurulgen\"+qisquch+".txt"))==false){
+						continue;
 					}
 					try{
 						strMeta = textBox1.Lines;
@@ -213,13 +236,15 @@ namespace AwazAmbiriQorali
 									}
 
 									strClean = CleanText(strMeta[i]);
-									if(rd.NextDouble()>0.15){
-										metaQur = string.Format("{0},{1},{2},training,",id,waveName,strClean);
+									strClean = strMeta[i];
+									if(rd.NextDouble()>=0.0){
+										metaQur = string.Format("{0}\t{1}",waveName,strClean);
+										trainBuf.Add(metaQur);
 									}
 									else{
-										metaQur = string.Format("{0},{1},{2},test,",id,waveName,strClean);
+										metaQur = string.Format("{0}\t{1}",waveName,strClean);
+										testBuf.Add(metaQur);
 									}
-									asrBuf.Add(metaQur);
 									
 									File.Copy(wavFiles[i],waveName);
 									label1.Text=String.Format("{0}/{1}",(i+1),strMeta.Length);
@@ -245,13 +270,20 @@ namespace AwazAmbiriQorali
 				}
 				
 				
-				filenm = Path.Combine(gAwazyol,"..\\asrdata.csv");
+				filenm = Path.Combine(gAwazyol,"..\\utrain.csv");
 				using (StreamWriter swr=new StreamWriter(filenm,false, Encoding.UTF8)){
-					foreach(String qur in asrBuf){
+					foreach(String qur in trainBuf){
 						swr.WriteLine(qur);
 					}
 				}
 				
+				filenm = Path.Combine(gAwazyol,"..\\utest.csv");
+				using (StreamWriter swr=new StreamWriter(filenm,false, Encoding.UTF8)){
+					foreach(String qur in testBuf){
+						swr.WriteLine(qur);
+					}
+				}
+
 			}catch(Exception){
 				
 			}
@@ -346,27 +378,28 @@ namespace AwazAmbiriQorali
 				ChkWavesSelectedIndexChanged(null, null);
 				ChkWavesDoubleClick(null,null);
 			}
-			if(e.KeyChar =='0'){
+			if(e.KeyChar =='^'){
 				e.Handled = true;
 				Ochur();
 			}
 			
-			if(e.KeyChar == 'O'
-			  )
+			if(e.KeyChar == 'O'  )
 			{
 				e.KeyChar='ö';
 			}
-			if(e.KeyChar == 'U'
-			  )
+			if(e.KeyChar == 'U' )
 			{
 				e.KeyChar='ü';
 			}
-			if(e.KeyChar == 'E'
-			  )
+			if(e.KeyChar == 'E')
 			{
 				e.KeyChar='é';
 			}
 			
+			if(e.KeyChar == '\'' || e.KeyChar == '`')
+			{
+				e.KeyChar='’';
+			}
 			if(e.KeyChar==0x1b){
 				gStop=true;
 				button2.Text="Hemmini Qoy";
@@ -535,7 +568,9 @@ namespace AwazAmbiriQorali
 		
 		string CleanText(String esli){
 			Regex reg = new Regex(@"[^ a-z'éöü’]");
-			String pakiz = reg.Replace(esli.ToLower(), " ").Replace("  "," ").Replace("  "," ").Replace("  "," ").Trim();
+			Regex kopbosh = new Regex("\\s+");
+			String pakiz = reg.Replace(esli.ToLower(), " ");
+			pakiz = kopbosh.Replace(pakiz," ").Trim();
 			return pakiz;
 		}
 		
@@ -577,6 +612,11 @@ namespace AwazAmbiriQorali
 				Sleep(2000);
 			}
 		}
+		
+		void TextBox1Click(object sender, EventArgs e)
+		{
+			textBox1.OrunOzgerdi();
+		}		
 	}
 }
 
