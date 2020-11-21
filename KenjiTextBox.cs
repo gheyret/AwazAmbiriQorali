@@ -44,13 +44,17 @@ namespace AwazAmbiriQorali
 					Application.DoEvents();
 				}
 				OrunOzgerdi();
-			}			
+				System.Diagnostics.Debug.WriteLine("Keldi -- WinProc");
+			}
 		}
 		
-		public void OrunOzgerdi(){			
+		public void OrunOzgerdi(){
 			int st = SelectionStart;
 			int line = GetLineFromCharIndex(st);
 			System.Diagnostics.Debug.WriteLine(line);
+			if(line>=ListBox.Items.Count){
+				line = ListBox.Items.Count-1;
+			}
 			ListBox.SelectedIndex = line;
 		}
 	}
